@@ -303,11 +303,9 @@
             ...conversationHistory.slice(-10)
         ];
 
-        // We wrap your endpoint with a public proxy path to eliminate browser CORS blocks
-        const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://g4f.space/api/gemini/chat/completions");
-
         try {
-            const res = await fetch(proxyUrl, {
+            // Reverted directly back to your exact working next.js format URL layout
+            const res = await fetch("https://g4f.space/api/gemini/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -318,10 +316,7 @@
                 })
             });
 
-            const proxyData = await res.json();
-            
-            // AllOrigins wraps the response inside a string parameter named 'contents'
-            const data = JSON.parse(proxyData.contents);
+            const data = await res.json();
             const reply = data.choices[0].message.content;
 
             document.getElementById(aiBubbleId).innerText = reply;
