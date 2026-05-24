@@ -304,11 +304,11 @@
         ];
 
         try {
-            // Reverted directly back to your exact working next.js format URL layout
             const res = await fetch("https://g4f.space/api/gemini/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": "Bearer non-empty-handshake"
                 },
                 body: JSON.stringify({
                     model: "gemini-2.5-flash",
@@ -318,9 +318,10 @@
 
             const data = await res.json();
             const reply = data.choices[0].message.content;
-
+            
             document.getElementById(aiBubbleId).innerText = reply;
             conversationHistory.push({ role: "assistant", content: reply });
+
         } catch (err) {
             document.getElementById(aiBubbleId).innerText = "Connection lost. Please try again.";
             console.error(err);
