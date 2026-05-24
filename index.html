@@ -307,20 +307,29 @@
             const res = await fetch("https://g4f.space/api/gemini/chat/completions", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer non-empty-handshake"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     model: "gemini-2.5-flash",
-                    messages: payloadMessages
+                    messages: payloadMessages,
+                    stream: false
                 })
             });
 
+            if (!res.ok) {
+                throw new Error(`HTTP error status: ${res.status}`);
+            }
+
             const data = await res.json();
-            const reply = data.choices[0].message.content;
             
-            document.getElementById(aiBubbleId).innerText = reply;
-            conversationHistory.push({ role: "assistant", content: reply });
+            // Explicitly map out the chat completion structure
+            if (data && data.choices && data.choices[0] && data.choices[0].message) {
+                const reply = data.choices[0].message.content;
+                document.getElementById(aiBubbleId).innerText = reply;
+                conversationHistory.push({ role: "assistant", content: reply });
+            } else {
+                throw new Error("Invalid response format data structural error");
+            }
 
         } catch (err) {
             document.getElementById(aiBubbleId).innerText = "Connection lost. Please try again.";
