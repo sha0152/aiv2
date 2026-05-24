@@ -3,91 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Socratic Coach Pro Dashboard</title>
+    <title>Nexus Premium — iOS Glassmorphism Edition</title>
     <style>
-        :root { --bg: #121212; --panel: #1e1e1e; --accent: #4af; --text: #e0e0e0; --ai-chat: #a3ff6c; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; box-sizing: border-box; hieght: 100vh; display: flex; flex-direction: column; }
-        
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
-        .timer-badge { background: #333; padding: 8px 15px; border-radius: 20px; font-weight: bold; color: #ff6b6b; }
-        
-        #status-box { background: var(--panel); border: 1px solid #333; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 15px; }
-        #progress-bar { width: 0%; height: 6px; background: var(--accent); border-radius: 3px; transition: width 0.3s; margin-top: 8px; }
-        
-        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-grow: 1; min-height: 500px; }
-        .panel { background: var(--panel); border: 1px solid #333; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
-        
-        /* Chat View */
-        #chat-box { flex-grow: 1; padding: 15px; overflow-y: auto; background: #151515; }
-        .msg { margin-bottom: 15px; line-height: 1.5; }
-        .user { color: var(--accent); }
-        .ai { color: var(--ai-chat); }
-        .input-area { display: flex; padding: 15px; background: var(--panel); gap: 10px; border-top: 1px solid #333; }
-        input[type="text"] { flex-grow: 1; padding: 12px; background: #2a2a2a; color: white; border: 1px solid #444; border-radius: 6px; }
-        button { padding: 12px 20px; background: var(--accent); color: #121212; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
-        button:disabled { background: #555; color: #888; cursor: not-allowed; }
+        :root {
+            --accent-blue: #0A84FF; /* iOS Premium Blue */
+            --text-main: #FFFFFF;
+            --text-muted: #8E8E93; /* iOS Muted Gray */
+        }
 
-        /* Workspace Tabs */
-        .tab-menu { display: flex; background: #151515; border-bottom: 1px solid #333; }
-        .tab-btn { background: none; color: #888; border: none; padding: 12px 20px; cursor: pointer; font-weight: bold; }
-        .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); background: var(--panel); }
-        .tab-content { padding: 15px; flex-grow: 1; display: none; }
-        .tab-content.active { display: flex; flex-direction: column; }
-        
-        textarea { width: 100%; flex-grow: 1; background: #151515; color: white; border: 1px solid #444; padding: 10px; border-radius: 6px; resize: none; box-sizing: border-box; }
-        
-        /* Whiteboard Styling */
-        #canvas { background: white; border-radius: 8px; cursor: crosshair; flex-grow: 1; width: 100%; }
-        .canvas-tools { display: flex; gap: 10px; margin-top: 10px; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 24px;
+            height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            background-color: #000000;
+            /* Apple-style colorful abstract gradient mesh running in the background */
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.6) 0, transparent 70%),
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.5) 0, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(225,39%,12%,1) 0, transparent 100%);
+            background-attachment: fixed;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        .brand h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        #status-container {
+            /* Frosted glass effect */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 3px;
+            background: var(--accent-blue);
+            border-radius: 2px;
+            margin-top: 8px;
+            transition: width 0.3s;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+            flex-grow: 1;
+            height: calc(100vh - 150px);
+            min-height: 0;
+        }
+
+        /* iOS Translucent Glass Panel Wrapper */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        #chat-scroller {
+            flex-grow: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Message Bubbles configured to look like iOS iMessage / Messages layout */
+        .bubble {
+            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 20px;
+            line-height: 1.5;
+            font-size: 15px;
+            animation: iOSPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .bubble.user {
+            background: var(--accent-blue);
+            color: #FFFFFF;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bubble.ai {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .input-bar {
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            gap: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+        }
+
+        .input-bar input {
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px 16px;
+            border-radius: 20px;
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+            transition: background 0.2s;
+        }
+
+        .input-bar input:focus {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .input-bar button {
+            background: var(--accent-blue);
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* iOS Tab Bar navigation subcomponents */
+        .workspace-tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 6px;
+            gap: 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tab {
+            flex: 1;
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-panel {
+            padding: 20px;
+            flex-grow: 1;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tab-panel.active { display: flex; }
+
+        textarea {
+            width: 100%;
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            color: var(--text-main);
+            padding: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        #canvas {
+            background: #FFFFFF;
+            border-radius: 16px;
+            cursor: crosshair;
+            flex-grow: 1;
+        }
+
+        /* Native fluid iOS pop scaling animation */
+        @keyframes iOSPop {
+            from { opacity: 0; transform: scale(0.96) translateY(4px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h2>🤖 Socratic Coach Pro <span style="font-size: 12px; color:#777;">V2.0</span></h2>
-    <div class="timer-badge" id="timer">Pomodoro: 25:00</div>
+    <div class="brand">
+        <h1>Nexus Studio</h1>
+    </div>
 </header>
 
-<div id="status-box">
-    <span id="status-text">Initializing WebGPU Engine...</span>
-    <div style="background: #333; border-radius: 4px; overflow: hidden; width: 100%;">
+<div id="status-container">
+    <span id="status-text">Connecting to iOS WebGPU Graphics Framework...</span>
+    <div style="background: rgba(255,255,255,0.05); border-radius: 2px;">
         <div id="progress-bar"></div>
     </div>
 </div>
 
-<div class="dashboard">
-    <div class="panel">
-        <div id="chat-box"></div>
-        <div class="input-area">
-            <input type="text" id="user-input" placeholder="Loading AI model..." disabled>
-            <button id="send-btn" onclick="sendMessage()" disabled>Send</button>
+<div class="app-layout">
+    <div class="glass-panel">
+        <div id="chat-scroller"></div>
+        <div class="input-bar">
+            <input type="text" id="chat-input" placeholder="Booting local interface components..." disabled onkeypress="handleKeyPress(event)">
+            <button id="submit-btn" onclick="sendChatMessage()" disabled>Send</button>
         </div>
     </div>
 
-    <div class="panel">
-        <div class="tab-menu">
-            <button class="tab-btn active" onclick="switchTab('notes')">📚 Material Integration</button>
-            <button class="tab-btn" onclick="switchTab('whiteboard')">🎨 Whiteboard</button>
-            <button class="tab-btn" onclick="switchTab('memory')">🧠 Memory Banks</button>
+    <div class="glass-panel">
+        <div class="workspace-tabs">
+            <button class="tab active" onclick="toggleWorkspace('materials')">Context Engine</button>
+            <button class="tab" onclick="toggleWorkspace('board')">Studio Canvas</button>
         </div>
 
-        <div id="notes" class="tab-content active">
-            <p style="margin-top:0; font-size:14px; color:#aaa;">Paste your syllabus, textbook text, or assignments here. The AI will strictly tutor you based on this source material.</p>
-            <textarea id="knowledge-base" placeholder="Paste study materials or rules here..."></textarea>
+        <div id="materials" class="tab-panel active">
+            <textarea id="knowledge-data" placeholder="Paste assignments, course notes, structures or syllabus data guidelines here..."></textarea>
         </div>
 
-        <div id="whiteboard" class="tab-content">
+        <div id="board" class="tab-panel">
             <canvas id="canvas"></canvas>
-            <div class="canvas-tools">
-                <button onclick="clearCanvas()" style="background:#ff6b6b; color:white;">Clear Board</button>
-                <span style="align-self: center; font-size: 13px; color: #aaa;">✏️ Use this space to map out your math/science steps manually!</span>
+            <div style="margin-top: 12px; display: flex; justify-content: flex-end;">
+                <button onclick="clearStudioCanvas()" style="background: #FF453A; color: white; padding: 8px 16px; border-radius: 18px; border:none; cursor:pointer; font-weight:600; font-size:13px;">Clear Canvas</button>
             </div>
-        </div>
-
-        <div id="memory" class="tab-content">
-            <h3>Continuous Storage Engine</h3>
-            <p style="font-size: 14px; color:#aaa;">Your past conversations and progress states are automatically cached directly in your browser's LocalStorage memory bank.</p>
-            <button onclick="clearMemory()" style="background:#555; color:white; width: max-content;">Wipe Brain Cache</button>
         </div>
     </div>
 </div>
@@ -95,134 +273,117 @@
 <script type="module">
     import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
 
-    const BASE_SYSTEM_PROMPT = `You are an elite, patient Socratic tutor. My goal is to truly learn. Never give me the direct solution to a problem. Instead, look at my input, identify where my understanding breaks down, and ask me ONE guiding question at a time to help me figure it out myself. Keep answers short and precise.`;
+    const BASE_INSTRUCTION = `You are an elite, patient Socratic tutor. My goal is to truly learn. Never give me the direct solution to a problem or write code/essays for me. Instead, evaluate my input, isolate where my structural knowledge fails, and challenge me with ONE targeted guiding question at a time. Keep replies brief.`;
     
     let engine;
-    let chatHistory = [];
+    let conversationHistory = [];
 
-    // Memory Integration: Load past chats automatically on launch
-    function loadSavedSession() {
-        const saved = localStorage.getItem("tutor_chat_history");
-        if (saved) {
-            chatHistory = JSON.parse(saved);
-            const chatBox = document.getElementById("chat-box");
-            chatHistory.forEach(msg => {
-                if(msg.role !== "system") {
-                    const cls = msg.role === "user" ? "user" : "ai";
-                    const label = msg.role === "user" ? "You" : "Tutor";
-                    chatBox.innerHTML += `<div class="msg ${cls}"><b>${label}:</b> ${msg.content}</div>`;
-                }
-            });
-            chatBox.scrollTop = chatBox.scrollHeight;
-        } else {
-            chatHistory = [{ role: "system", content: BASE_SYSTEM_PROMPT }];
-        }
-    }
-
-    async function initAI() {
+    async function initializeSystem() {
         try {
+            // Running Llama-3.2-1B locally via browser GPU for zero API limit capping constraints
             engine = await CreateMLCEngine("Llama-3.2-1B-Instruct-q4f16_1-MLC", {
                 initProgressCallback: (report) => {
                     document.getElementById("status-text").innerText = report.text;
                     document.getElementById("progress-bar").style.width = `${Math.round(report.progress * 100)}%`;
                 }
             });
-            
-            document.getElementById("status-text").innerText = "⚡ Socratic Engine Active. All Premium Modules Operational.";
-            document.getElementById("user-input").disabled = false;
-            document.getElementById("user-input").placeholder = "Ask your coach anything...";
-            document.getElementById("send-btn").disabled = false;
-            loadSavedSession();
+
+            document.getElementById("status-text").innerText = "🔮 Engine Ready. Secure Sandbox Operational.";
+            document.getElementById("chat-input").disabled = false;
+            document.getElementById("chat-input").placeholder = "Message your Socratic coach...";
+            document.getElementById("submit-btn").disabled = false;
+
+            const stored = localStorage.getItem('local_tutor_history');
+            if(stored) {
+                conversationHistory = JSON.parse(stored);
+                renderStoredInterface();
+            } else {
+                conversationHistory = [{ role: "system", content: BASE_INSTRUCTION }];
+            }
         } catch (e) {
-            document.getElementById("status-text").innerText = "❌ WebGPU initialization error. Try updating Chrome.";
+            document.getElementById("status-text").innerText = "❌ Initialization error. WebGPU activation requires a compatible browser like Chrome or Edge.";
+            console.error(e);
         }
     }
 
-    window.sendMessage = async function() {
-        const inputEl = document.getElementById("user-input");
-        const chatBox = document.getElementById("chat-box");
-        const text = inputEl.value.trim();
-        if(!text) return;
-
-        chatBox.innerHTML += `<div class="msg user"><b>You:</b> ${text}</div>`;
-        inputEl.value = "";
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        // Material Integration: Pull text context dynamically out of the custom material workspace tab
-        const customMaterial = document.getElementById("knowledge-base").value.trim();
-        if(customMaterial && chatHistory[0].role === "system") {
-            chatHistory[0].content = `${BASE_SYSTEM_PROMPT}\n\nSTRICT CONTEXT CRITERIA:\n${customMaterial}`;
-        }
-
-        chatHistory.push({ role: "user", content: text });
-
-        const aiId = "ai-" + Date.now();
-        chatBox.innerHTML += `<div class="msg ai" id="${aiId}"><b>Tutor:</b> Analyzing...</div>`;
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        const reply = await engine.chat.completions.create({ messages: chatHistory });
-        const replyText = reply.choices[0].message.content;
-
-        document.getElementById(aiId).innerHTML = `<b>Tutor:</b> ${replyText}`;
-        chatHistory.push({ role: "assistant", content: replyText });
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        // Save State Engine: Persistent browser storage update
-        localStorage.setItem("tutor_chat_history", JSON.stringify(chatHistory));
+    function renderStoredInterface() {
+        const scroller = document.getElementById('chat-scroller');
+        conversationHistory.forEach(msg => {
+            if(msg.role !== 'system') {
+                const bubbleClass = msg.role === 'user' ? 'user' : 'ai';
+                scroller.innerHTML += `<div class="bubble ${bubbleClass}">${msg.content}</div>`;
+            }
+        });
+        scroller.scrollTop = scroller.scrollHeight;
     }
 
-    // Global layout/Tab mechanics 
-    window.switchTab = function(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
+    window.handleKeyPress = function(e) {
+        if(e.key === 'Enter') sendChatMessage();
+    }
+
+    window.sendChatMessage = async function() {
+        const inputField = document.getElementById('chat-input');
+        const userText = inputField.value.trim();
+        if(!userText) return;
+
+        const scroller = document.getElementById('chat-scroller');
+        scroller.innerHTML += `<div class="bubble user">${userText}</div>`;
+        inputField.value = '';
+        scroller.scrollTop = scroller.scrollHeight;
+
+        const contextMaterial = document.getElementById('knowledge-data').value.trim();
+        if(contextMaterial) {
+            conversationHistory[0].content = `${BASE_INSTRUCTION}\n\nSTRICT CONTEXT FRAMEWORK:\n${contextMaterial}`;
+        }
+
+        conversationHistory.push({ role: "user", content: userText });
+
+        const uniqueAiId = 'ai-' + Date.now();
+        scroller.innerHTML += `<div class="bubble ai" id="${uniqueAiId}">Analyzing...</div>`;
+        scroller.scrollTop = scroller.scrollHeight;
+
+        const replyResult = await engine.chat.completions.create({ messages: conversationHistory });
+        const aiResponseText = replyResult.choices[0].message.content;
+
+        document.getElementById(uniqueAiId).innerText = aiResponseText;
+        conversationHistory.push({ role: "assistant", content: aiResponseText });
+        
+        localStorage.setItem('local_tutor_history', JSON.stringify(conversationHistory));
+        scroller.scrollTop = scroller.scrollHeight;
+    }
+
+    window.toggleWorkspace = function(panelId) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(panelId).classList.add('active');
         event.target.classList.add('active');
-        if(tabId === 'whiteboard') initCanvas();
+        if(panelId === 'board') renderCanvasGrid();
     }
 
-    window.clearMemory = function() {
-        localStorage.removeItem("tutor_chat_history");
-        location.reload();
-    }
+    let appCanvas, sketchCtx, activeDrawState = false;
+    function renderCanvasGrid() {
+        appCanvas = document.getElementById("canvas");
+        sketchCtx = appCanvas.getContext("2d");
+        appCanvas.width = appCanvas.parentElement.clientWidth;
+        appCanvas.height = appCanvas.parentElement.clientHeight - 80;
+        sketchCtx.strokeStyle = "#1C1C1E"; /* Apple Dark Gray ink stroke */
+        sketchCtx.lineWidth = 4;
+        sketchCtx.lineCap = "round";
 
-    // Proactive Accountability Module: Classic Pomodoro Engine
-    let timeLeft = 25 * 60;
-    setInterval(() => {
-        if(timeLeft > 0) {
-            timeLeft--;
-            const mins = Math.floor(timeLeft / 60);
-            const secs = timeLeft % 60;
-            document.getElementById("timer").innerText = `Pomodoro: ${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        } else {
-            document.getElementById("timer").innerText = "Break Time! Ask your tutor for a quick conceptual quiz.";
-        }
-    }, 1000);
-
-    // Canvas Engine Setup (Whiteboard Mechanics)
-    let canvas, ctx, drawing = false;
-    function initCanvas() {
-        canvas = document.getElementById("canvas");
-        ctx = canvas.getContext("2d");
-        canvas.width = canvas.parentElement.clientWidth - 30;
-        canvas.height = 350;
-        ctx.strokeStyle = "#121212";
-        ctx.lineWidth = 3;
-        ctx.lineCap = "round";
-
-        canvas.onmousedown = () => drawing = true;
-        canvas.onmouseup = () => { drawing = false; ctx.beginPath(); };
-        canvas.onmousemove = (e) => {
-            if(!drawing) return;
-            const rect = canvas.getBoundingClientRect();
-            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        appCanvas.onmousedown = () => activeDrawState = true;
+        appCanvas.onmouseup = () => { activeDrawState = false; sketchCtx.beginPath(); };
+        appCanvas.onmousemove = (event) => {
+            if(!activeDrawState) return;
+            const configurationBounds = appCanvas.getBoundingClientRect();
+            sketchCtx.lineTo(event.clientX - configurationBounds.left, event.clientY - configurationBounds.top);
+            sketchCtx.stroke();
+            sketchCtx.beginPath();
+            sketchCtx.moveTo(event.clientX - configurationBounds.left, event.clientY - configurationBounds.top);
         }
     }
-    window.clearCanvas = function() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    window.clearStudioCanvas = function() { sketchCtx.clearRect(0, 0, appCanvas.width, appCanvas.height); }
 
-    initAI();
+    initializeSystem();
 </script>
 </body>
 </html>
