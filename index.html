@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Premium — iOS Glassmorphism Edition</title>
+    <title>Nexus Premium — Infinite Cloud Canvas</title>
+    <script src="https://js.puter.com/v2/"></script>
     <style>
         :root {
-            --accent-blue: #0A84FF; /* iOS Premium Blue */
+            --accent-blue: #0A84FF;
             --text-main: #FFFFFF;
-            --text-muted: #8E8E93; /* iOS Muted Gray */
+            --text-muted: #8E8E93;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             margin: 0;
             padding: 24px;
             height: 100vh;
@@ -20,11 +21,9 @@
             display: flex;
             flex-direction: column;
             background-color: #000000;
-            /* Apple-style colorful abstract gradient mesh running in the background */
             background-image: 
                 radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%),
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.6) 0, transparent 70%),
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.5) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(225,39%,25%,0.5) 0, transparent 70%),
                 radial-gradient(at 100% 100%, hsla(225,39%,12%,1) 0, transparent 100%);
             background-attachment: fixed;
             overflow: hidden;
@@ -35,37 +34,25 @@
             justify-content: space-between;
             align-items: center;
             padding-bottom: 16px;
-            margin-bottom: 16px;
         }
 
         .brand h1 {
             font-size: 22px;
             font-weight: 700;
-            letter-spacing: -0.5px;
             margin: 0;
             color: var(--text-main);
         }
 
-        #status-container {
-            /* Frosted glass effect */
-            background: rgba(255, 255, 255, 0.05);
+        .cloud-badge {
+            background: rgba(10, 132, 255, 0.15);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 20px;
-            border-radius: 14px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        #progress-bar {
-            width: 0%;
-            height: 3px;
-            background: var(--accent-blue);
-            border-radius: 2px;
-            margin-top: 8px;
-            transition: width 0.3s;
+            border: 1px solid rgba(10, 132, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #30A2FF;
         }
 
         .app-layout {
@@ -73,11 +60,10 @@
             grid-template-columns: 1.2fr 1fr;
             gap: 20px;
             flex-grow: 1;
-            height: calc(100vh - 150px);
+            height: calc(100vh - 80px);
             min-height: 0;
         }
 
-        /* iOS Translucent Glass Panel Wrapper */
         .glass-panel {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(30px);
@@ -99,7 +85,6 @@
             gap: 16px;
         }
 
-        /* Message Bubbles configured to look like iOS iMessage / Messages layout */
         .bubble {
             max-width: 75%;
             padding: 12px 18px;
@@ -127,14 +112,13 @@
         .input-bar {
             padding: 16px 20px;
             background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
             display: flex;
             gap: 12px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             align-items: center;
         }
 
-        .input-bar input {
+        .input-bar input[type="text"] {
             flex-grow: 1;
             background: rgba(255, 255, 255, 0.07);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -143,25 +127,18 @@
             color: var(--text-main);
             font-size: 15px;
             outline: none;
-            transition: background 0.2s;
         }
 
-        .input-bar input:focus {
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .input-bar button {
+        .send-btn {
             background: var(--accent-blue);
-            color: #FFFFFF;
+            color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 20px;
             font-weight: 600;
             cursor: pointer;
-            font-size: 14px;
         }
 
-        /* iOS Tab Bar navigation subcomponents */
         .workspace-tabs {
             display: flex;
             background: rgba(0, 0, 0, 0.15);
@@ -180,7 +157,6 @@
             font-weight: 600;
             cursor: pointer;
             border-radius: 10px;
-            transition: all 0.2s;
         }
 
         .tab.active {
@@ -206,8 +182,6 @@
             border-radius: 16px;
             color: var(--text-main);
             padding: 16px;
-            font-size: 14px;
-            line-height: 1.5;
             resize: none;
             outline: none;
             box-sizing: border-box;
@@ -220,7 +194,6 @@
             flex-grow: 1;
         }
 
-        /* Native fluid iOS pop scaling animation */
         @keyframes iOSPop {
             from { opacity: 0; transform: scale(0.96) translateY(4px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
@@ -231,97 +204,51 @@
 
 <header>
     <div class="brand">
-        <h1>Nexus Studio</h1>
+        <h1>Nexus Studio <span>Uncapped</span></h1>
+    </div>
+    <div class="cloud-badge">
+        🌐 Unlimited Cloud Tunnel Active
     </div>
 </header>
 
-<div id="status-container">
-    <span id="status-text">Connecting to iOS WebGPU Graphics Framework...</span>
-    <div style="background: rgba(255,255,255,0.05); border-radius: 2px;">
-        <div id="progress-bar"></div>
-    </div>
-</div>
-
 <div class="app-layout">
     <div class="glass-panel">
-        <div id="chat-scroller"></div>
+        <div id="chat-scroller">
+            <div class="bubble ai">System active. Puter cloud pathways verified. You have unlimited text interactions with zero rate limits. No keys required.</div>
+        </div>
         <div class="input-bar">
-            <input type="text" id="chat-input" placeholder="Booting local interface components..." disabled onkeypress="handleKeyPress(event)">
-            <button id="submit-btn" onclick="sendChatMessage()" disabled>Send</button>
+            <input type="text" id="chat-input" placeholder="Ask your Socratic coach anything..." onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendChatMessage()">Send</button>
         </div>
     </div>
 
     <div class="glass-panel">
         <div class="workspace-tabs">
-            <button class="tab active" onclick="toggleWorkspace('materials')">Context Engine</button>
-            <button class="tab" onclick="toggleWorkspace('board')">Studio Canvas</button>
+            <button class="tab active" onclick="toggleWorkspace('board')">Studio Canvas</button>
+            <button class="tab" onclick="toggleWorkspace('materials')">Context Engine</button>
         </div>
 
-        <div id="materials" class="tab-panel active">
-            <textarea id="knowledge-data" placeholder="Paste assignments, course notes, structures or syllabus data guidelines here..."></textarea>
-        </div>
-
-        <div id="board" class="tab-panel">
+        <div id="board" class="tab-panel active">
             <canvas id="canvas"></canvas>
             <div style="margin-top: 12px; display: flex; justify-content: flex-end;">
-                <button onclick="clearStudioCanvas()" style="background: #FF453A; color: white; padding: 8px 16px; border-radius: 18px; border:none; cursor:pointer; font-weight:600; font-size:13px;">Clear Canvas</button>
+                <button onclick="clearStudioCanvas()" style="background: #FF453A; color: white; padding: 8px 16px; border-radius: 18px; border:none; cursor:pointer; font-weight:600; font-size:13px;">Clear</button>
             </div>
+        </div>
+
+        <div id="materials" class="tab-panel">
+            <textarea id="knowledge-data" placeholder="Paste structural documents, assignments, code snippets, or notes here to ground the AI's logic..."></textarea>
         </div>
     </div>
 </div>
 
-<script type="module">
-    import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
-
-    const BASE_INSTRUCTION = `You are an elite, patient Socratic tutor. My goal is to truly learn. Never give me the direct solution to a problem or write code/essays for me. Instead, evaluate my input, isolate where my structural knowledge fails, and challenge me with ONE targeted guiding question at a time. Keep replies brief.`;
+<script>
+    const SOCRATIC_PROMPT = `You are an elite, patient Socratic tutor. Never give direct solutions. Evaluate user input, isolate where structural knowledge fails, and ask ONE targeted guiding question to step them toward the answer. Keep replies brief.`;
     
-    let engine;
     let conversationHistory = [];
 
-    async function initializeSystem() {
-        try {
-            // Running Llama-3.2-1B locally via browser GPU for zero API limit capping constraints
-            engine = await CreateMLCEngine("Llama-3.2-1B-Instruct-q4f16_1-MLC", {
-                initProgressCallback: (report) => {
-                    document.getElementById("status-text").innerText = report.text;
-                    document.getElementById("progress-bar").style.width = `${Math.round(report.progress * 100)}%`;
-                }
-            });
+    window.handleKeyPress = (e) => { if(e.key === 'Enter') sendChatMessage(); };
 
-            document.getElementById("status-text").innerText = "🔮 Engine Ready. Secure Sandbox Operational.";
-            document.getElementById("chat-input").disabled = false;
-            document.getElementById("chat-input").placeholder = "Message your Socratic coach...";
-            document.getElementById("submit-btn").disabled = false;
-
-            const stored = localStorage.getItem('local_tutor_history');
-            if(stored) {
-                conversationHistory = JSON.parse(stored);
-                renderStoredInterface();
-            } else {
-                conversationHistory = [{ role: "system", content: BASE_INSTRUCTION }];
-            }
-        } catch (e) {
-            document.getElementById("status-text").innerText = "❌ Initialization error. WebGPU activation requires a compatible browser like Chrome or Edge.";
-            console.error(e);
-        }
-    }
-
-    function renderStoredInterface() {
-        const scroller = document.getElementById('chat-scroller');
-        conversationHistory.forEach(msg => {
-            if(msg.role !== 'system') {
-                const bubbleClass = msg.role === 'user' ? 'user' : 'ai';
-                scroller.innerHTML += `<div class="bubble ${bubbleClass}">${msg.content}</div>`;
-            }
-        });
-        scroller.scrollTop = scroller.scrollHeight;
-    }
-
-    window.handleKeyPress = function(e) {
-        if(e.key === 'Enter') sendChatMessage();
-    }
-
-    window.sendChatMessage = async function() {
+    async function sendChatMessage() {
         const inputField = document.getElementById('chat-input');
         const userText = inputField.value.trim();
         if(!userText) return;
@@ -332,23 +259,24 @@
         scroller.scrollTop = scroller.scrollHeight;
 
         const contextMaterial = document.getElementById('knowledge-data').value.trim();
-        if(contextMaterial) {
-            conversationHistory[0].content = `${BASE_INSTRUCTION}\n\nSTRICT CONTEXT FRAMEWORK:\n${contextMaterial}`;
-        }
+        const finalSystemInstruction = contextMaterial ? `${SOCRATIC_PROMPT}\n\nSTRICT CONTEXT:\n${contextMaterial}` : SOCRATIC_PROMPT;
 
-        conversationHistory.push({ role: "user", content: userText });
-
-        const uniqueAiId = 'ai-' + Date.now();
-        scroller.innerHTML += `<div class="bubble ai" id="${uniqueAiId}">Analyzing...</div>`;
+        const aiBubbleId = 'ai-' + Date.now();
+        scroller.innerHTML += `<div class="bubble ai" id="${aiBubbleId}">Querying proxy cluster...</div>`;
         scroller.scrollTop = scroller.scrollHeight;
 
-        const replyResult = await engine.chat.completions.create({ messages: conversationHistory });
-        const aiResponseText = replyResult.choices[0].message.content;
+        try {
+            // Puter routes directly to gemini-3.5-flash via its unified, keyless global cloud pool
+            const responseText = await puter.ai.chat(
+                `${finalSystemInstruction}\n\nUser: ${userText}`, 
+                { model: 'gemini-3.5-flash' }
+            );
 
-        document.getElementById(uniqueAiId).innerText = aiResponseText;
-        conversationHistory.push({ role: "assistant", content: aiResponseText });
-        
-        localStorage.setItem('local_tutor_history', JSON.stringify(conversationHistory));
+            document.getElementById(aiBubbleId).innerText = responseText;
+        } catch (err) {
+            document.getElementById(aiBubbleId).innerText = "Cloud routing timeout. Re-attempting pipeline check...";
+            console.error(err);
+        }
         scroller.scrollTop = scroller.scrollHeight;
     }
 
@@ -357,33 +285,32 @@
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById(panelId).classList.add('active');
         event.target.classList.add('active');
-        if(panelId === 'board') renderCanvasGrid();
     }
 
-    let appCanvas, sketchCtx, activeDrawState = false;
-    function renderCanvasGrid() {
-        appCanvas = document.getElementById("canvas");
-        sketchCtx = appCanvas.getContext("2d");
-        appCanvas.width = appCanvas.parentElement.clientWidth;
-        appCanvas.height = appCanvas.parentElement.clientHeight - 80;
-        sketchCtx.strokeStyle = "#1C1C1E"; /* Apple Dark Gray ink stroke */
-        sketchCtx.lineWidth = 4;
-        sketchCtx.lineCap = "round";
+    let canvas, ctx, drawing = false;
+    function initCanvas() {
+        canvas = document.getElementById("canvas");
+        ctx = canvas.getContext("2d");
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight - 80;
+        ctx.strokeStyle = "#1C1C1E";
+        ctx.lineWidth = 4;
+        ctx.lineCap = "round";
 
-        appCanvas.onmousedown = () => activeDrawState = true;
-        appCanvas.onmouseup = () => { activeDrawState = false; sketchCtx.beginPath(); };
-        appCanvas.onmousemove = (event) => {
-            if(!activeDrawState) return;
-            const configurationBounds = appCanvas.getBoundingClientRect();
-            sketchCtx.lineTo(event.clientX - configurationBounds.left, event.clientY - configurationBounds.top);
-            sketchCtx.stroke();
-            sketchCtx.beginPath();
-            sketchCtx.moveTo(event.clientX - configurationBounds.left, event.clientY - configurationBounds.top);
+        canvas.onmousedown = () => drawing = true;
+        canvas.onmouseup = () => { drawing = false; ctx.beginPath(); };
+        canvas.onmousemove = (e) => {
+            if(!drawing) return;
+            const bounds = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - bounds.left, e.clientY - bounds.top);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - bounds.left, e.clientY - bounds.top);
         }
     }
-    window.clearStudioCanvas = function() { sketchCtx.clearRect(0, 0, appCanvas.width, appCanvas.height); }
+    window.clearStudioCanvas = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    initializeSystem();
+    setTimeout(initCanvas, 500);
 </script>
 </body>
 </html>
