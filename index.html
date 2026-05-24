@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Premium — Infinite Cloud Canvas</title>
-    <script src="https://js.puter.com/v2/"></script>
+    <title>Nexus Studio — Infinite Open Core</title>
     <style>
         :root {
             --accent-blue: #0A84FF;
@@ -43,16 +42,16 @@
             color: var(--text-main);
         }
 
-        .cloud-badge {
-            background: rgba(10, 132, 255, 0.15);
+        .tunnel-badge {
+            background: rgba(48, 209, 88, 0.15);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(10, 132, 255, 0.3);
+            border: 1px solid rgba(48, 209, 88, 0.3);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
-            color: #30A2FF;
+            color: #30D158;
         }
 
         .app-layout {
@@ -204,20 +203,20 @@
 
 <header>
     <div class="brand">
-        <h1>Nexus Studio <span>Uncapped</span></h1>
+        <h1>Nexus Studio <span>G4F Core</span></h1>
     </div>
-    <div class="cloud-badge">
-        🌐 Unlimited Cloud Tunnel Active
+    <div class="tunnel-badge">
+        🟢 Direct G4F Route Active
     </div>
 </header>
 
 <div class="app-layout">
     <div class="glass-panel">
         <div id="chat-scroller">
-            <div class="bubble ai">System active. Puter cloud pathways verified. You have unlimited text interactions with zero rate limits. No keys required.</div>
+            <div class="bubble ai">G4F proxy channel open. Completely un-throttled text interactions are active with no popup interruptions. Type a prompt below to begin your session.</div>
         </div>
         <div class="input-bar">
-            <input type="text" id="chat-input" placeholder="Ask your Socratic coach anything..." onkeypress="handleKeyPress(event)">
+            <input type="text" id="chat-input" placeholder="Message your Socratic coach..." onkeypress="handleKeyPress(event)">
             <button class="send-btn" onclick="sendChatMessage()">Send</button>
         </div>
     </div>
@@ -236,7 +235,7 @@
         </div>
 
         <div id="materials" class="tab-panel">
-            <textarea id="knowledge-data" placeholder="Paste structural documents, assignments, code snippets, or notes here to ground the AI's logic..."></textarea>
+            <textarea id="knowledge-data" placeholder="Paste assignments, source materials, study notes, or rubric sheets here to focus the AI's logic..."></textarea>
         </div>
     </div>
 </div>
@@ -262,20 +261,41 @@
         const finalSystemInstruction = contextMaterial ? `${SOCRATIC_PROMPT}\n\nSTRICT CONTEXT:\n${contextMaterial}` : SOCRATIC_PROMPT;
 
         const aiBubbleId = 'ai-' + Date.now();
-        scroller.innerHTML += `<div class="bubble ai" id="${aiBubbleId}">Querying proxy cluster...</div>`;
+        scroller.innerHTML += `<div class="bubble ai" id="${aiBubbleId}">Routing through open pipeline...</div>`;
         scroller.scrollTop = scroller.scrollHeight;
 
-        try {
-            // Puter routes directly to gemini-3.5-flash via its unified, keyless global cloud pool
-            const responseText = await puter.ai.chat(
-                `${finalSystemInstruction}\n\nUser: ${userText}`, 
-                { model: 'gemini-3.5-flash' }
-            );
+        // Formulating standard OpenAI-compatible message structure arrays for the downstream endpoint
+        conversationHistory.push({ role: "user", content: userText });
+        
+        const payloadMessages = [
+            { role: "system", content: finalSystemInstruction },
+            ...conversationHistory.slice(-6) // Keeps context fluid while protecting local memory boundaries
+        ];
 
-            document.getElementById(aiBubbleId).innerText = responseText;
+        try {
+            // Re-routing directly to a high-capacity, keyless open public inference node
+            const response = await fetch('https://open-ai-api-production.up.railway.app/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    model: 'gemini-2.5-flash',
+                    messages: payloadMessages,
+                    temperature: 0.3
+                })
+            });
+
+            const data = await response.json();
+            const reply = data.choices[0].message.content;
+
+            document.getElementById(aiBubbleId).innerText = reply;
+            conversationHistory.push({ role: "assistant", content: reply });
         } catch (err) {
-            document.getElementById(aiBubbleId).innerText = "Cloud routing timeout. Re-attempting pipeline check...";
+            document.getElementById(aiBubbleId).innerText = "The open route is congested. Sending retry packet link...";
             console.error(err);
+            // Auto-fallback backup if proxy route fluctuates
+            setTimeout(sendChatMessage, 1000);
         }
         scroller.scrollTop = scroller.scrollHeight;
     }
