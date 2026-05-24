@@ -20,7 +20,6 @@
             display: flex;
             flex-direction: column;
             background-color: #000000;
-            /* Ultra-premium iOS fluid gradient mesh background */
             background-image: 
                 radial-gradient(at 0% 0%, hsla(240, 30%, 15%, 1) 0, transparent 60%),
                 radial-gradient(at 50% 0%, hsla(225, 45%, 28%, 0.7) 0, transparent 70%),
@@ -55,7 +54,6 @@
             min-height: 0;
         }
 
-        /* Deep Frosted Glassmorphism Panels */
         .glass-panel {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(40px) saturate(180%);
@@ -102,7 +100,6 @@
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        /* Typing Indicator dots */
         .typing-dots {
             display: flex;
             gap: 5px;
@@ -160,9 +157,7 @@
             transition: transform 0.1s, background 0.2s;
         }
 
-        .send-btn:active {
-            transform: scale(0.96);
-        }
+        .send-btn:active { transform: scale(0.96); }
 
         .workspace-tabs {
             display: flex;
@@ -221,10 +216,8 @@
             border-radius: 20px;
             cursor: crosshair;
             flex-grow: 1;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        /* Keyframe Animations */
         @keyframes iOSPop {
             from { opacity: 0; transform: scale(0.95) translateY(6px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
@@ -294,7 +287,6 @@
         const contextMaterial = document.getElementById('knowledge-data').value.trim();
         const finalSystemInstruction = contextMaterial ? `${SOCRATIC_PROMPT}\n\nSTRICT CONTEXT:\n${contextMaterial}` : SOCRATIC_PROMPT;
 
-        // Append typing indicator bubble
         const aiBubbleId = 'ai-' + Date.now();
         scroller.innerHTML += `
             <div class="bubble ai" id="${aiBubbleId}">
@@ -311,8 +303,11 @@
             ...conversationHistory.slice(-10)
         ];
 
+        // We wrap your endpoint with a public proxy path to eliminate browser CORS blocks
+        const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://g4f.space/api/gemini/chat/completions");
+
         try {
-            const res = await fetch("https://g4f.space/api/gemini/chat/completions", {
+            const res = await fetch(proxyUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -323,10 +318,12 @@
                 })
             });
 
-            const data = await res.json();
+            const proxyData = await res.json();
+            
+            // AllOrigins wraps the response inside a string parameter named 'contents'
+            const data = JSON.parse(proxyData.contents);
             const reply = data.choices[0].message.content;
 
-            // Swap out the typing dots with the actual response text
             document.getElementById(aiBubbleId).innerText = reply;
             conversationHistory.push({ role: "assistant", content: reply });
         } catch (err) {
