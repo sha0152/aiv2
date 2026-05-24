@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Studio — Stable Premium Core</title>
+    <title>Nexus Studio — G4F Space Core</title>
     <style>
         :root {
             --accent-blue: #0A84FF;
@@ -43,15 +43,15 @@
         }
 
         .tunnel-badge {
-            background: rgba(10, 132, 255, 0.15);
+            background: rgba(48, 209, 88, 0.15);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(10, 132, 255, 0.3);
+            border: 1px solid rgba(48, 209, 88, 0.3);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
-            color: #30A2FF;
+            color: #30D158;
         }
 
         .app-layout {
@@ -203,17 +203,17 @@
 
 <header>
     <div class="brand">
-        <h1>Nexus Studio <span>Pro</span></h1>
+        <h1>Nexus Studio <span>G4F Space</span></h1>
     </div>
     <div class="tunnel-badge">
-        🔵 Secure Direct Channel Active
+        🟢 g4f.space Tunnel Active
     </div>
 </header>
 
 <div class="app-layout">
     <div class="glass-panel">
         <div id="chat-scroller">
-            <div class="bubble ai">Premium line connected. All popup scripts have been stripped, and routing congestion is resolved. Type your message to begin.</div>
+            <div class="bubble ai">Connected directly to the g4f.space API pipeline. Unlimited text interactions are live with zero popup window disruptions. Send a message below to start.</div>
         </div>
         <div class="input-bar">
             <input type="text" id="chat-input" placeholder="Message your Socratic coach..." onkeypress="handleKeyPress(event)">
@@ -235,7 +235,7 @@
         </div>
 
         <div id="materials" class="tab-panel">
-            <textarea id="knowledge-data" placeholder="Paste assignments, source materials, study notes, or rubric sheets here..."></textarea>
+            <textarea id="knowledge-data" placeholder="Paste assignments, documentation, or study notes here to frame the conversation context..."></textarea>
         </div>
     </div>
 </div>
@@ -261,44 +261,40 @@
         const finalSystemInstruction = contextMaterial ? `${SOCRATIC_PROMPT}\n\nSTRICT CONTEXT:\n${contextMaterial}` : SOCRATIC_PROMPT;
 
         const aiBubbleId = 'ai-' + Date.now();
-        scroller.innerHTML += `<div class="bubble ai" id="${aiBubbleId}">Thinking...</div>`;
+        scroller.innerHTML += `<div class="bubble ai" id="${aiBubbleId}">Connecting to g4f space...</div>`;
         scroller.scrollTop = scroller.scrollHeight;
 
+        // Construct conversation context array
         conversationHistory.push({ role: "user", content: userText });
         
         const payloadMessages = [
             { role: "system", content: finalSystemInstruction },
-            ...conversationHistory.slice(-10) 
+            ...conversationHistory.slice(-10) // Retains last 10 back-and-forth turns for context memory
         ];
 
         try {
-            // Swapping out the broken proxy for an unthrottled, fast, open cloud endpoint running gemini-2.5-flash
-            const response = await fetch('https://api.chutes.ai/v1/chat/completions', {
-                method: 'POST',
+            // Your exact requested endpoint URL implementation
+            const res = await fetch("https://g4f.space/api/gemini/chat/completions", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer chutes-public-client'
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    model: 'gemini-2.5-flash',
-                    messages: payloadMessages,
-                    temperature: 0.4
+                    model: "gemini-2.5-flash",
+                    messages: payloadMessages
                 })
             });
 
-            const data = await response.json();
+            const data = await res.json();
+            
+            // Extract response from standard ChatCompletion structure mapping
             const reply = data.choices[0].message.content;
 
             document.getElementById(aiBubbleId).innerText = reply;
             conversationHistory.push({ role: "assistant", content: reply });
         } catch (err) {
+            document.getElementById(aiBubbleId).innerText = "Connection link error. Please try sending your message again.";
             console.error(err);
-            // Instant automated alternative route safety trigger
-            try {
-                const altResponse = await fetch('https://lite.duckduckgo.com/lite/', { method: 'GET' });
-                document.getElementById(aiBubbleId).innerText = "Connection fluid adjustment required. Retrying system pulse...";
-            } catch(e) {}
-            document.getElementById(aiBubbleId).innerText = "Error: Line drop. Please click send again to retry connection.";
         }
         scroller.scrollTop = scroller.scrollHeight;
     }
